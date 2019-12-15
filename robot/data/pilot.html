@@ -1,0 +1,115 @@
+<html>
+    <head>
+        <title>ESP3266</title>
+        <meta name="viewport" content="initial-scale=1.0">
+        <style type="text/css">
+        body {
+            background-color: #303131;
+        }
+        .header {
+            width:100%;
+        }
+        .canvas {
+            width:100%;
+        }
+        .button {
+            width:80%;
+            font-size: xx-large;
+            background-color: #75c1e9;
+            border-radius: 25px;
+            vertical-align:middle;
+            padding: 12px;
+            text-align: center;
+            color:lightyellow;
+            margin-bottom: 40;
+            
+        }
+        .keyboard {
+            width: 100%;
+            display: flex;
+            flex-flow: row wrap;
+          }
+          
+          .key {
+            display: flex;
+            width: 33%;
+            align-items: center;
+            justify-content: center;
+            flex: 1 0 30%;
+            color: black;
+          }
+          .icon {
+              width: 100%;
+          }
+
+        </style>  
+          <script  type="text/javascript">
+            key="stop";
+            
+            function action(element) {
+                console.log("img"+key);
+                document.getElementById("img"+key).setAttribute("src", key+"_off.png");
+                key=element.id;
+                document.getElementById("img"+key).setAttribute("src", key+"_on.png");
+                //coloredKeyboard();
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "/action?key="+key, true);
+                xhr.onload = function (e) {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        console.log(xhr.responseText);
+                        var response = JSON.parse(xhr.responseText);
+                        console.log("key: " + response.key);
+                        key=response.key;
+                        coloredKeyboard();
+                    } else {
+                        console.error(xhr.statusText);
+                    }
+                }
+                };
+                xhr.onerror = function (e) {
+                    console.error(xhr.statusText);
+                };
+                xhr.send(null);
+            }
+            function init() {
+                console.log("Mode pilot");
+                
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "/mode?set=pilot", true);
+                xhr.onload = function (e) {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        console.log(xhr.responseText);
+                    } else {
+                        console.error(xhr.statusText);
+                    }
+                }
+                };
+                xhr.onerror = function (e) {
+                    console.error(xhr.statusText);
+                };
+                xhr.send(null);
+            }
+           
+          </script>
+    </head>
+    <body onload="init()">
+        <div class="header" align="center">
+            <div class="button" onclick="location.href='index.html';"><span>Menu</span></div>
+        </div>
+        <div class="canvas" align="center">
+            <div class="keyboard" id="keyboard">
+                <div class="key" id="topleft" onclick="action(this)"><img id="imgtopleft" class="icon" src="topleft_off.png" /></div>
+                <div class="key" id="top" onclick="action(this)"><img id="imgtop" class="icon" src="top_off.png" /></div>
+                <div class="key" id="topright" onclick="action(this)"><img id="imgtopright" class="icon" src="topright_off.png" /></div>
+                <div class="key" id="left" onclick="action(this)"><img id="imgleft" class="icon" src="left_off.png" /></div>
+                <div class="key" id="stop" onclick="action(this)"><img id="imgstop" class="icon" src="stop_off.png" /></div>
+                <div class="key" id="right" onclick="action(this)"><img id="imgright" class="icon" src="right_off.png" /></div>
+                <div class="key" id="bottomleft" onclick="action(this)"><img id="imgbottomleft" class="icon" src="bottomleft_off.png" /></div>
+                <div class="key" id="bottom" onclick="action(this)"><img id="imgbottom" class="icon" src="bottom_off.png" /></div>
+                <div class="key" id="bottomright" onclick="action(this)"><img id="imgbottomright" class="icon" src="bottomright_off.png" /></div>
+            </div>
+        </div>
+    </body>
+</html>

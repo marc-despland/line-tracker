@@ -1,0 +1,102 @@
+<html>
+    <head>
+        <title>ESP3266</title>
+        <meta name="viewport" content="initial-scale=1.0">
+        <style type="text/css">
+        body {
+            background-color: #303131;
+        }
+        .header {
+            width:100%;
+        }
+        .canvas {
+            width:100%;
+        }
+        .button {
+            width:80%;
+            font-size: xx-large;
+            background-color: #75c1e9;
+            border-radius: 25px;
+            vertical-align:middle;
+            padding: 12px;
+            text-align: center;
+            color:lightyellow;
+            margin-bottom: 40;
+            
+        }
+        </style>  
+          <script  type="text/javascript">
+            
+            function calibrationBlack() {
+                console.log("calibration black");
+                document.getElementById("black").style.backgroundColor = "#00FF00";
+
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "/calibrate/black", true);
+                xhr.onload = function (e) {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        console.log(xhr.responseText);
+                    } else {
+                        console.error(xhr.statusText);
+                    }
+                    document.getElementById("black").style.backgroundColor = "#75c1e9";
+                }
+                };
+                xhr.onerror = function (e) {
+                    console.error(xhr.statusText);
+                };
+                xhr.send(null);
+            }
+            function calibrationWhite() {
+                console.log("calibration white");
+                document.getElementById("white").style.backgroundColor = "#00FF00";
+
+                
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "/calibrate/white", true);
+                xhr.onload = function (e) {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        console.log(xhr.responseText);
+                    } else {
+                        console.error(xhr.statusText);
+                    }
+                    document.getElementById("white").style.backgroundColor = "#75c1e9";
+                }
+                };
+                xhr.onerror = function (e) {
+                    console.error(xhr.statusText);
+                };
+                xhr.send(null);
+            }
+           function init() {
+            console.log("Mode calibration");
+                
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "/mode?set=calibration", true);
+                xhr.onload = function (e) {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        console.log(xhr.responseText);
+                    } else {
+                        console.error(xhr.statusText);
+                    }
+                }
+                };
+                xhr.onerror = function (e) {
+                    console.error(xhr.statusText);
+                };
+                xhr.send(null);
+            }
+           
+          </script>
+    </head>
+    <body onload="init()">
+        <div class="header" align="center">
+            <div class="button" onclick="location.href='index.html';"><span>Menu</span></div>
+            <div class="button" onclick="calibrationBlack();" id="black"><span>Calibration Ligne</span></div>
+            <div class="button" onclick="calibrationWhite();" id="black"><span>Calibration Vide</span></div>
+        </div>
+    </body>
+</html>

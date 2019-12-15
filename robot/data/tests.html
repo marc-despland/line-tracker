@@ -1,0 +1,215 @@
+<html>
+    <head>
+        <title>ESP3266</title>
+        <meta name="viewport" content="initial-scale=1.0">
+        <style type="text/css">
+        body {
+            background-color: #303131;
+            color:lightyellow;
+        }
+        .header {
+            width:100%;
+        }
+        .canvas {
+            width:100%;
+        }
+        .label {
+            font-size: x-large;
+        }
+        .button {
+            width:80%;
+            font-size: xx-large;
+            background-color: #75c1e9;
+            border-radius: 25px;
+            vertical-align:middle;
+            padding: 12px;
+            text-align: center;
+            color:lightyellow;
+            margin-bottom: 40;  
+        }
+        .ledbox {
+            width:100%;
+            height: 60px;
+            display: flex;
+            flex-flow: row wrap;
+            margin: 5px;
+            padding: 5px;
+        }
+        .led {
+            display: flex;
+            width: 30px;
+            height: 100%;
+            align-items: center;
+            justify-content: center;
+            flex: 1 1 30px;
+            border-radius: 15px;
+            margin-left: 2px;
+            margin-right: 2px;
+        }
+        .red {
+            background-color: darkred;
+        }
+        .blue {
+            background-color: darkblue;
+        }
+        .green {
+            background-color: darkgreen;
+        }
+        .white {
+            background-color: white;
+        }
+        .slidecontainer {
+                width: 100%;
+              }
+              
+              .slider {
+                -webkit-appearance: none;
+                width: 100%;
+                height: 40px;
+                background: #d3d3d3;
+                outline: none;
+                opacity: 0.7;
+                -webkit-transition: .2s;
+                transition: opacity .2s;
+              }
+              
+              .slider:hover {
+                opacity: 1;
+              }
+              
+              .slider::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                appearance: none;
+                width: 40px;
+                height: 40px;
+                background: #00FF00;
+                cursor: pointer;
+              }
+              
+              .slider::-moz-range-thumb {
+                width: 40px;
+                height: 40px;
+                background: #00FF00;
+                cursor: pointer;
+              }
+              .testtitle {
+                margin-top: 20px;
+              }
+              .parameter {
+                margin-bottom: 20px;
+              }
+       </style>  
+          <script  type="text/javascript">
+            
+            function testLed(element) {
+                console.log("Test LED "+element.id);
+                if (element.id=="cubered") {
+                    element.style.backgroundColor = "red";
+                } else {
+                    document.getElementById("cubered").style.backgroundColor = "darkred";
+                }
+                if (element.id=="cubeblue") {
+                    element.style.backgroundColor = "#0000FF";
+                } else {   
+                    document.getElementById("cubeblue").style.backgroundColor = "darkblue";
+                }
+                if (element.id=="cubegreen") {
+                    element.style.backgroundColor = "#00FF00";
+                } else {   
+                    document.getElementById("cubegreen").style.backgroundColor = "darkgreen";
+                }
+                if (element.id=="tracker1") {
+                    element.style.backgroundColor = "#00FF00";
+                } else {   
+                    document.getElementById("tracker1").style.backgroundColor = "white";
+                }
+                if (element.id=="tracker2") {
+                    element.style.backgroundColor = "#00FF00";
+                } else {   
+                    document.getElementById("tracker2").style.backgroundColor = "white";
+                }
+                if (element.id=="tracker3") {
+                    element.style.backgroundColor = "#00FF00";
+                } else {   
+                    document.getElementById("tracker3").style.backgroundColor = "white";
+                }
+                if (element.id=="tracker4") {
+                    element.style.backgroundColor = "#00FF00";
+                } else {   
+                    document.getElementById("tracker4").style.backgroundColor = "white";
+                }
+                if (element.id=="tracker5") {
+                    element.style.backgroundColor = "#00FF00";
+                } else {   
+                    document.getElementById("tracker5").style.backgroundColor = "white";
+                }
+            }
+            function init() {
+                console.log("Mode tests");
+                
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "/mode?set=tests", true);
+                xhr.onload = function (e) {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        console.log(xhr.responseText);
+                    } else {
+                        console.error(xhr.statusText);
+                    }
+                }
+                };
+                xhr.onerror = function (e) {
+                    console.error(xhr.statusText);
+                };
+                xhr.send(null);
+            }
+          </script>
+    </head>
+    <body onload="init()">
+        <div class="header" align="center">
+            <div class="button" onclick="location.href='index.html';"><span>Menu</span></div>
+            <h1 class="testtitle">Test des leds</h1>
+            <div class="ledbox">
+                <div class="led red" id="cubered" onclick="testLed(this)"></div>
+                <div class="led blue" id="cubeblue" onclick="testLed(this)"></div>
+                <div class="led green" id="cubegreen" onclick="testLed(this)"></div>
+                <div class="led white" id="tracker1" onclick="testLed(this)"></div>
+                <div class="led white" id="tracker2" onclick="testLed(this)"></div>
+                <div class="led white" id="tracker3" onclick="testLed(this)"></div>
+                <div class="led white" id="tracker4" onclick="testLed(this)"></div>
+                <div class="led white" id="tracker5" onclick="testLed(this)"></div>
+            </div>
+            
+            <h1 class="testtitle">Test des moteurs</h1>
+            <div class="parameter">
+                <p class="label">Moteur droit: <span id="right"></span></p>
+                <div class="slidecontainer">
+                    <input type="range" min="0" max="90" value="45" class="slider" id="rightrange">
+                </div>
+            </div>
+            <div class="parameter">
+                    <p class="label">Moteur gauche: <span id="left"></span></p>
+                    <div class="slidecontainer">
+                        <input type="range" min="0" max="90" value="45" class="slider" id="leftrange">
+                    </div>
+                </div>
+                <div class="button green" onclick="calibrationBlack();"><span>GO !!</span></div>
+            <div class="button red" onclick="calibrationWhite();"><span>STOP</span></div>
+        </div>
+    </body>
+    <script>            
+        var rightRange = document.getElementById("rightrange");
+        var outputRight = document.getElementById("right");
+        outputRight.innerHTML = rightRange.value;
+
+        rightRange.oninput = function() {
+            outputRight.innerHTML = this.value;
+        }           
+        var leftRange = document.getElementById("leftrange");
+        var outputLeft = document.getElementById("left");
+        outputLeft.innerHTML = leftRange.value;
+
+        leftRange.oninput = function() {
+            outputLeft.innerHTML = this.value;
+        }  </script>
+</html>
