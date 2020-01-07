@@ -161,6 +161,7 @@ void setup(){
   server.on("/tests/motors", HTTP_GET, [](AsyncWebServerRequest *request){
     int right=0;
     int left=0;
+    Serial.println("motors");
     if(request->hasParam("right") && request->hasParam("left")) {
       AsyncWebParameter* r = request->getParam("right");
       AsyncWebParameter* l = request->getParam("left");
@@ -190,7 +191,6 @@ void setup(){
   });  
  
   server.begin();
-  
   robot=new Robot(RIGHT_PIN, LEFT_PIN, SER_PIN, RCLK_PIN, SRCLK_PIN, MUXENABLE_PIN, MUXSIGA_PIN, MUXSIGB_PIN, MUXSIGC_PIN, MUXSIGNAL_PIN);
   rst_info *resetInfo;
   resetInfo = ESP.getResetInfoPtr();
@@ -198,7 +198,7 @@ void setup(){
 }
  
 void loop(){
-  
+  /*
   if ((action!=calibration) && (action!=tests)) {
     if (millis()-lastTrackerMesure>INTERVAL_TRACKER_MESURE) {
       robot->readTrackers();
@@ -210,6 +210,6 @@ void loop(){
       algorithm->tick();
       lastTick=millis();
     }
-  } 
+  } */
 
 }

@@ -17,14 +17,20 @@ void ShiftRegister::write() {
   digitalWrite(this->RCLK, LOW);
   for(int i = NB_REGISTERED_PIN - 1; i >=  0; i--){
     digitalWrite(this->SRCLK, LOW);
-    digitalWrite(this->SER, (int) this->registers[i]);
+    digitalWrite(this->SER, this->registers[i] ? HIGH : LOW);
     digitalWrite(this->SRCLK, HIGH);
+    if (this->registers[i]) {
+      Serial.print("HIGH ");
+    } else {
+      Serial.print("LOW ");
+    }
   }
   digitalWrite(this->RCLK, HIGH);
+  Serial.println();
 }
 
 bool ShiftRegister::set(int index, bool value) {
-  bool change=(value==this->registers[index]);
+  bool change=(value!=this->registers[index]);
   this->registers[index]=value;
   return change;
 }

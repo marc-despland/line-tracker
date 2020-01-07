@@ -1,13 +1,13 @@
 #include "robot.h"
 
-#define LED_CUBE_BLUE 0
-#define LED_CUBE_RED 1
-#define LED_CUBE_GREEN 2
-#define LED_TRACKER_1 3
-#define LED_TRACKER_2 4
-#define LED_TRACKER_3 5
-#define LED_TRACKER_4 6
-#define LED_TRACKER_5 7
+#define LED_CUBE_BLUE 7
+#define LED_CUBE_RED 6
+#define LED_CUBE_GREEN 5
+#define LED_TRACKER_1 4
+#define LED_TRACKER_2 3
+#define LED_TRACKER_3 2
+#define LED_TRACKER_4 0
+#define LED_TRACKER_5 1
 
 #define TRACKER_1 0
 #define TRACKER_2 1
@@ -26,10 +26,10 @@ Robot::Robot(int right, int left,int SER, int RCLK, int SRCLK,int muxEnable, int
   this->speed=80;
   this->right=new Servo();
   this->right->attach(right);
-  this->right->write(90);
+  this->right->write(NULL_SPEED);
   this->left=new Servo();
   this->left->attach(left);
-  this->left->write(90);
+  this->left->write(NULL_SPEED);
   this->registers = new ShiftRegister(SER, RCLK, SRCLK);
   this->analogMux = new AnalogMux(muxEnable, muxSigA, muxSigB, muxSigC, muxSignal);
   for (int i=0;i<5;i++) this->trackers[i]=0;
@@ -118,16 +118,16 @@ unsigned int Robot::trackerValue(unsigned int index) {
 }
 
 void Robot::testLed(String name) {
-  bool change=false;
-  change = change || this->registers->set(LED_CUBE_BLUE, name=="cubeblue");
-  change = change || this->registers->set(LED_CUBE_GREEN, name=="cubegreen");
-  change = change || this->registers->set(LED_CUBE_RED, name=="cubered");
-  change = change || this->registers->set(LED_TRACKER_1, name=="tracker1");
-  change = change || this->registers->set(LED_TRACKER_2, name=="tracker2");
-  change = change || this->registers->set(LED_TRACKER_3, name=="tracker3");
-  change = change || this->registers->set(LED_TRACKER_4, name=="tracker4");
-  change = change || this->registers->set(LED_TRACKER_5, name=="tracker5");
-  if (change) this->registers->write();  
+  int change =0;
+  if (this->registers->set(LED_CUBE_BLUE, name=="cubeblue")) change++;
+  if (this->registers->set(LED_CUBE_GREEN, name=="cubegreen")) change++;
+  if (this->registers->set(LED_CUBE_RED, name=="cubered")) change++;
+  if (this->registers->set(LED_TRACKER_1, name=="tracker1")) change++;
+  if (this->registers->set(LED_TRACKER_2, name=="tracker2")) change++;
+  if (this->registers->set(LED_TRACKER_3, name=="tracker3")) change++;
+  if (this->registers->set(LED_TRACKER_4, name=="tracker4")) change++;
+  if (this->registers->set(LED_TRACKER_5, name=="tracker5")) change++;
+  if (change>0) this->registers->write();  
 }
 
 void Robot::move(int left,int right) {
